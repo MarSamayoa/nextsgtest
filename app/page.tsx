@@ -1,4 +1,4 @@
-import UNSGLeadershipTool from "./component/sg-leadership-tool";
+import UNSGLeadershipTool from "./components/sg-leadership-tool";
 
 export default function Home() {
   return (
