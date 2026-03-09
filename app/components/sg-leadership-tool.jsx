@@ -9,6 +9,40 @@ import jsPDF from "jspdf";
    Full single-file rebuild
    ========================================================= */
 
+
+
+function PPGLogo() {
+  return (
+    <svg
+      width="110"
+      height="34"
+      viewBox="0 0 280 88"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: "block" }}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8 8h28c16.5 0 27 9.5 27 23s-10.5 23-27 23H26v26H8V8z M26 22v18h8.5c6 0 10-4 10-9s-4-9-10-9H26z"
+        fill="#0A0F1C"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M76 8h28c16.5 0 27 9.5 27 23s-10.5 23-27 23H94v26H76V8z M94 22v18h8.5c6 0 10-4 10-9s-4-9-10-9H94z"
+        fill="#0A0F1C"
+      />
+      <path d="M121 28l10 5.5-10 5.5z" fill="#E8913A" />
+      <circle cx="107" cy="30" r="2.5" fill="#0A0F1C" />
+      <path
+        d="M142 44c0-21 16-38 38-38 14 0 24 6 30 15l-15 10c-3.5-5-8.5-8-15-8-12.5 0-20 9.5-20 21s7.5 21 20 21c7 0 12-3 15-7V50h-18V34h35v32c-7 10-19 17-32 17-22 0-38-17-38-39z"
+        fill="#0A0F1C"
+      />
+    </svg>
+  );
+}
+
 const PILLARS = [
   { id: 1, name: "Institutional Ambition", color: "#2171D4" },
   { id: 2, name: "Executive Capacity", color: "#12A67C" },
@@ -2143,7 +2177,7 @@ function QuizTab({ onComplete, existingProfile, onSeeMatches, resultsExportRef }
           gap: 10,
           justifyContent: "center",
           flexWrap: "wrap",
-          marginTop: 16,
+          marginTop: 12,
         }}
       >
         <button
@@ -3915,39 +3949,95 @@ export default function SGLeadershipTool() {
         color: "#0f172a",
       }}
     >
-      <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0" }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "18px 24px 0" }}>
+<div
+  style={{
+    background: "#f8fafc",
+    borderBottom: "1px solid #e2e8f0",
+    paddingBottom: 12,
+  }}
+>  <div style={{ maxWidth: 1180, margin: "0 auto", padding: "18px 24px 0" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: 20,
+        marginBottom: 14,
+        flexWrap: "wrap",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 14,
+          flex: 1,
+          minWidth: 0,
+          maxWidth: 820,
+        }}
+      >
+        <div
+  style={{
+    marginTop: 4,
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    paddingRight: 12,
+    borderRight: "1px solid #e2e8f0",
+  }}
+>
+  <PPGLogo />
+</div>
+
+        <div style={{ minWidth: 0 }}>
           <div
             style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 20,
-              marginBottom: 14,
-              flexWrap: "wrap",
+              fontSize: 11,
+              fontWeight: 900,
+              color: "#475569",
+              textTransform: "uppercase",
+              letterSpacing: 1.6,
+              marginBottom: 4,
             }}
           >
-            <div style={{ maxWidth: 720 }}>
-              <div style={{ fontSize: 11, fontWeight: 900, color: "#475569", textTransform: "uppercase", letterSpacing: 1.6, marginBottom: 4 }}>
-                UNSG Selection 2026
-              </div>
-              <h1 style={{ fontSize: 22, fontWeight: 900, margin: 0, color: "#0f172a", lineHeight: 1.2 }}>
-                SG Leadership Navigator
-              </h1>
-              <p style={{ fontSize: 12, color: "#334155", margin: "8px 0 0", lineHeight: 1.55, maxWidth: 700 }}>
-                {TOOL_DESCRIPTION}
-              </p>
-            </div>
-
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button onClick={() => setShowMethod(true)} style={topBtnSt}>
-                Methodology
-              </button>
-              <button onClick={() => setShowDimRef(true)} style={topBtnSt}>
-                Dimensions
-              </button>
-            </div>
+            UNSG Selection 2026
           </div>
+
+          <h1
+            style={{
+              fontSize: 22,
+              fontWeight: 900,
+              margin: 0,
+              color: "#0f172a",
+              lineHeight: 1.2,
+            }}
+          >
+            SG Leadership Navigator
+          </h1>
+
+          <p
+            style={{
+              fontSize: 12,
+              color: "#334155",
+              margin: "8px 0 0",
+              lineHeight: 1.55,
+              maxWidth: 700,
+            }}
+          >
+            {TOOL_DESCRIPTION}
+          </p>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button onClick={() => setShowMethod(true)} style={topBtnSt}>
+          Methodology
+        </button>
+        <button onClick={() => setShowDimRef(true)} style={topBtnSt}>
+          Dimensions
+        </button>
+      </div>
+    </div>
 
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             {TABS.map((t) => (
