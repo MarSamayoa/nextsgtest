@@ -1846,7 +1846,7 @@ function AxisStrip({ candidates, onCandidateClick, selectedId, userProfile, show
    Quiz
    ========================================================= */
 
-function QuizPosition({ pos, value, pillarColor, onSelect }) {
+function QuizPosition({ pos, value, pillarColor, onSelect, isNarrow }) {
   const [open, setOpen] = useState(false);
   const isSelected = value === pos.score;
 
@@ -1862,32 +1862,41 @@ function QuizPosition({ pos, value, pillarColor, onSelect }) {
         type="button"
         onClick={() => onSelect(pos.score)}
         style={{
-          width: 540,
-          maxWidth: "100%",
-          padding: "18px 20px",
-          borderRadius: 18,
-          border: isSelected ? `3px solid ${pillarColor}` : "2px solid #dbe3ea",
-          background: isSelected ? `${pillarColor}10` : "#fff",
-          cursor: "pointer",
-          fontFamily: "inherit",
-          fontSize: 15,
-          fontWeight: 700,
-          color: "#334155",
-          lineHeight: 1.35,
-          transition: "all .15s ease",
-          textAlign: "center",
-          boxShadow: isSelected ? `0 0 0 2px ${pillarColor}20` : "none",
-        }}
+  width: "100%",
+  maxWidth: isNarrow ? "100%" : 540,
+  padding: isNarrow ? "14px 14px" : "18px 20px",
+  borderRadius: isNarrow ? 16 : 18,
+  border: isSelected ? `3px solid ${pillarColor}` : "2px solid #dbe3ea",
+  background: isSelected ? `${pillarColor}10` : "#fff",
+  cursor: "pointer",
+  fontFamily: "inherit",
+  fontSize: isNarrow ? 14 : 15,
+  fontWeight: 700,
+  color: "#334155",
+  lineHeight: 1.35,
+  transition: "all .15s ease",
+  textAlign: "left",
+  boxShadow: isSelected ? `0 0 0 2px ${pillarColor}20` : "none",
+  boxSizing: "border-box",
+}}
       >
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-          }}
-        >
-          <span style={{ flex: 1 }}>{pos.label}</span>
+  style={{
+    display: "flex",
+    alignItems: isNarrow ? "flex-start" : "center",
+    justifyContent: "space-between",
+    gap: 10,
+  }}
+>
+  <span
+    style={{
+      flex: 1,
+      minWidth: 0,
+      textAlign: isNarrow ? "left" : "center",
+    }}
+  >
+    {pos.label}
+  </span>
 
           <span
             onMouseEnter={(e) => {
@@ -1922,17 +1931,17 @@ function QuizPosition({ pos, value, pillarColor, onSelect }) {
               <div
                 style={{
                   position: "absolute",
-                  left: "calc(100% + 12px)",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  width: 320,
-                  maxWidth: "min(320px, calc(100vw - 48px))",
+                  left: "50%",
+                  top: "calc(100% + 10px)",
+                  transform: "translateX(-50%)",
+                  width: 280,
+                  maxWidth: "min(280px, calc(100vw - 48px))",
                   background: "#1e293b",
                   color: "#fff",
-                  borderRadius: 18,
-                  padding: "18px 20px",
-                  fontSize: 13.5,
-                  lineHeight: 1.7,
+                  borderRadius: 14,
+                  padding: "14px 16px",
+                  fontSize: 13,
+                  lineHeight: 1.6,
                   boxShadow: "0 16px 40px rgba(15,23,42,.28)",
                   zIndex: 50,
                   textAlign: "left",
@@ -1941,18 +1950,17 @@ function QuizPosition({ pos, value, pillarColor, onSelect }) {
                 }}
               >
                 {pos.detail}
-
                 <div
                   style={{
                     position: "absolute",
-                    left: -10,
-                    top: "50%",
-                    transform: "translateY(-50%)",
+                    top: -8,
+                    left: "50%",
+                    transform: "translateX(-50%)",
                     width: 0,
                     height: 0,
-                    borderTop: "10px solid transparent",
-                    borderBottom: "10px solid transparent",
-                    borderRight: "10px solid #1e293b",
+                    borderLeft: "8px solid transparent",
+                    borderRight: "8px solid transparent",
+                    borderBottom: "8px solid #1e293b",
                   }}
                 />
               </div>
@@ -1964,10 +1972,14 @@ function QuizPosition({ pos, value, pillarColor, onSelect }) {
   );
 }
 
-function QuizTab({ onComplete, existingProfile, onSeeMatches, resultsExportRef }) {
-  const [selections, setSelections] = useState(() => existingProfile?._selections || {});
+function QuizTab({
+  onComplete,
+  existingProfile,
+  onSeeMatches,
+  resultsExportRef,
+  isNarrow,
+}) {  const [selections, setSelections] = useState(() => existingProfile?._selections || {});
   const [submitted, setSubmitted] = useState(!!existingProfile);
-  const [activePopover, setActivePopover] = useState(null);
 
   const [positionOrders] = useState(() => {
     const orders = {};
@@ -2241,8 +2253,16 @@ function QuizTab({ onComplete, existingProfile, onSeeMatches, resultsExportRef }
   const progress = step / QUIZ_QUESTIONS.length;
 
   return (
-    <div style={{ maxWidth: 1040, margin: "0 auto", padding: "28px 24px 40px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 30 }}>
+<div
+  style={{
+    maxWidth: 1040,
+    margin: "0 auto",
+    padding: isNarrow ? "20px 16px 32px" : "28px 24px 40px",
+    boxSizing: "border-box",
+    width: "100%",
+    overflowX: "hidden",
+  }}
+>      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 30 }}>
         <div style={{ flex: 1, height: 10, background: "#e2e8f0", borderRadius: 999, overflow: "hidden" }}>
           <div
             style={{
@@ -2277,21 +2297,29 @@ function QuizTab({ onComplete, existingProfile, onSeeMatches, resultsExportRef }
         {pillar.name}
       </div>
 
-      <h3 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", lineHeight: 1.35, margin: "0 0 26px", maxWidth: 920 }}>
-        {currentQ.question}
+<h3
+  style={{
+    fontSize: isNarrow ? 18 : 28,
+    fontWeight: 900,
+    color: "#0f172a",
+    lineHeight: 1.28,
+    margin: "0 0 22px",
+    maxWidth: 920,
+  }}
+>        {currentQ.question}
       </h3>
 
       <div style={{ display: "grid", gap: 16, maxWidth: 1040 }}>
         {order.map((idx) => {
           const pos = currentQ.positions[idx];
-          const isSelected = selections[currentQ.id] === pos.score;
           return (
             <QuizPosition
-           key={`${currentQ.id}_${idx}`}
-            pos={pos}
-            value={selections[currentQ.id]}
-            pillarColor={pillar.color}
-            onSelect={(score) => handleSelect(currentQ.id, score)}
+              key={`${currentQ.id}_${idx}`}
+              pos={pos}
+              value={selections[currentQ.id]}
+              pillarColor={pillar.color}
+              onSelect={(score) => handleSelect(currentQ.id, score)}
+              isNarrow={isNarrow}
             />
           );
         })}
@@ -3829,8 +3857,7 @@ export default function SGLeadershipTool() {
   const resultsExportRef = useRef(null);
 
   useEffect(() => {
-    const onResize = () => setIsNarrow(window.innerWidth < 1120);
-    onResize();
+    const onResize = () => setIsNarrow(window.innerWidth < 768);    onResize();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
@@ -3947,6 +3974,9 @@ export default function SGLeadershipTool() {
         background: "#f8fafc",
         fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#0f172a",
+        overflowX: "hidden",
+        width: "100%",
+        boxSizing: "border-box",
       }}
     >
 <div
@@ -3957,87 +3987,95 @@ export default function SGLeadershipTool() {
   }}
 >  <div style={{ maxWidth: 1180, margin: "0 auto", padding: "18px 24px 0" }}>
     <div
-      style={{
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
-        gap: 20,
-        marginBottom: 14,
-        flexWrap: "wrap",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 14,
-          flex: 1,
-          minWidth: 0,
-          maxWidth: 820,
-        }}
-      >
-        <div
   style={{
-    marginTop: 4,
-    flexShrink: 0,
     display: "flex",
-    alignItems: "center",
-    paddingRight: 12,
-    borderRight: "1px solid #e2e8f0",
+    flexDirection: isNarrow ? "column" : "row",
+    alignItems: isNarrow ? "stretch" : "flex-start",
+    justifyContent: "space-between",
+    gap: isNarrow ? 14 : 20,
+    marginBottom: 14,
   }}
 >
-  <PPGLogo />
-</div>
-
-        <div style={{ minWidth: 0 }}>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 900,
-              color: "#475569",
-              textTransform: "uppercase",
-              letterSpacing: 1.6,
-              marginBottom: 4,
-            }}
-          >
-            UNSG Selection 2026
-          </div>
-
-          <h1
-            style={{
-              fontSize: 22,
-              fontWeight: 900,
-              margin: 0,
-              color: "#0f172a",
-              lineHeight: 1.2,
-            }}
-          >
-            SG Leadership Navigator
-          </h1>
-
-          <p
-            style={{
-              fontSize: 12,
-              color: "#334155",
-              margin: "8px 0 0",
-              lineHeight: 1.55,
-              maxWidth: 700,
-            }}
-          >
-            {TOOL_DESCRIPTION}
-          </p>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button onClick={() => setShowMethod(true)} style={topBtnSt}>
-          Methodology
-        </button>
-        <button onClick={() => setShowDimRef(true)} style={topBtnSt}>
-          Dimensions
-        </button>
-      </div>
+  <div
+    style={{
+      display: "flex",
+      flexDirection: isNarrow ? "column" : "row",
+      alignItems: isNarrow ? "flex-start" : "flex-start",
+      gap: isNarrow ? 12 : 14,
+      flex: 1,
+      minWidth: 0,
+      maxWidth: isNarrow ? "100%" : 820,
+    }}
+  >
+    <div
+      style={{
+        marginTop: isNarrow ? 0 : 4,
+        flexShrink: isNarrow ? 1 : 0,
+        display: "flex",
+        alignItems: "center",
+        paddingRight: isNarrow ? 0 : 12,
+        borderRight: isNarrow ? "none" : "1px solid #e2e8f0",
+      }}
+    >
+      <PPGLogo />
     </div>
+
+    <div style={{ minWidth: 0, width: "100%" }}>
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 900,
+          color: "#475569",
+          textTransform: "uppercase",
+          letterSpacing: 1.6,
+          marginBottom: 4,
+        }}
+      >
+        UNSG Selection 2026
+      </div>
+
+      <h1
+        style={{
+          fontSize: isNarrow ? 18 : 22,
+          fontWeight: 900,
+          margin: 0,
+          color: "#0f172a",
+          lineHeight: 1.2,
+        }}
+      >
+        SG Leadership Navigator
+      </h1>
+
+      <p
+        style={{
+          fontSize: isNarrow ? 13 : 12,
+          color: "#334155",
+          margin: "8px 0 0",
+          lineHeight: 1.6,
+          maxWidth: isNarrow ? "100%" : 700,
+        }}
+      >
+        {TOOL_DESCRIPTION}
+      </p>
+    </div>
+  </div>
+
+  <div
+    style={{
+      display: "flex",
+      gap: 8,
+      flexWrap: "wrap",
+      justifyContent: isNarrow ? "flex-start" : "flex-end",
+    }}
+  >
+    <button onClick={() => setShowMethod(true)} style={topBtnSt}>
+      Methodology
+    </button>
+    <button onClick={() => setShowDimRef(true)} style={topBtnSt}>
+      Dimensions
+    </button>
+  </div>
+</div>
 
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             {TABS.map((t) => (
@@ -4088,36 +4126,42 @@ export default function SGLeadershipTool() {
     onSeeMatches={() => setActiveTab(1)}
     existingProfile={userProfile}
     resultsExportRef={resultsExportRef}
+    isNarrow={isNarrow}
   />
 )}
 
-      {activeTab === 1 ? (
-        <>
-          {candidates.length > 0 ? (
-            <div style={{ maxWidth: 1180, margin: "0 auto", padding: "24px 24px 0" }}>
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 18,
-                  padding: "24px 14px 34px",
-                  marginBottom: 10,
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <AxisStrip
-                  candidates={candidates}
-                  onCandidateClick={() => {}}
-                  selectedId={null}
-                  userProfile={userProfile}
-                  showUserMarker={true}
-                />
-              </div>
-            </div>
-          ) : null}
+{activeTab === 1 ? (
+  <>
+    {candidates.length > 0 ? (
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "24px 24px 0" }}>
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 18,
+            padding: "24px 14px 34px",
+            marginBottom: 10,
+            border: "1px solid #e2e8f0",
+          }}
+        >
+          <AxisStrip
+            candidates={candidates}
+            onCandidateClick={() => {}}
+            selectedId={null}
+            userProfile={userProfile}
+            showUserMarker={true}
+          />
+        </div>
+      </div>
+    ) : null}
 
-          <MatchesTab userProfile={userProfile} candidates={candidates} isNarrow={isNarrow}  matchExportRefs={matchExportRefs}/>
-        </>
-      ) : null}
+    <MatchesTab
+      userProfile={userProfile}
+      candidates={candidates}
+      isNarrow={isNarrow}
+      matchExportRefs={matchExportRefs}
+    />
+  </>
+) : null}
 
       {activeTab === 2 ? (
         <>
