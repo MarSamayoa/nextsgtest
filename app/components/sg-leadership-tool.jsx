@@ -1820,10 +1820,16 @@ function CandidateCard({
   </div>
 </div>
 
-<div
-  data-export-hide="true"
-  style={{ display: "flex", gap: 10, alignItems: "flex-end", height: 34 }}
->
+    <div
+      data-export-hide="true"
+      style={{
+        display: "flex",
+        gap: 10,
+        alignItems: "flex-end",
+        height: 34,
+        flexShrink: 0,
+      }}
+    >
   <div style={{ display: "flex", gap: 5, alignItems: "flex-end", height: 34 }}>
     {PILLARS.map((p) => {
       const val = pillarAvg(candidate.scores, p.id);
@@ -1859,13 +1865,15 @@ function CandidateCard({
         </div>
 
         {expanded ? (
-              <div
-    style={{
-      padding: "0 20px 20px",
-      borderLeft: `5px solid ${candidate.color}`,
-      background: "#fff",
-    }}
-  >
+                <div
+                  style={{
+                    padding: isNarrow ? "0 14px 16px" : "0 20px 20px",
+                    borderLeft: `5px solid ${candidate.color}`,
+                    background: "#fff",
+                    overflowX: "hidden",
+                    minWidth: 0,
+                  }}
+                >
                {allCandidates.length > 1 ? (
               <div data-export-hide="true" style={{ marginBottom: 14 }}>
                   <div style={{ fontSize: 12, fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
@@ -1876,34 +1884,45 @@ function CandidateCard({
                   {allCandidates.filter((c) => c.id !== candidate.id).map((c) => {
                     const active = compareIds.includes(c.id);
                     return (
-                      <button
-                        key={c.id}
-                        onClick={() => toggleCompare(c.id)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 7,
-                          padding: "7px 13px",
-                          borderRadius: 999,
-                          border: active ? `2px solid ${c.color}` : "2px solid #e2e8f0",
-                          background: active ? `${c.color}12` : "#fff",
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                          fontSize: 12,
-                          fontWeight: 700,
-                          color: active ? c.color : "#475569",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: "50%",
-                            background: active ? c.color : "#e2e8f0",
-                          }}
-                        />
-                        {c.name}
-                      </button>
+                  <button
+                    key={c.id}
+                    onClick={() => toggleCompare(c.id)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 7,
+                      padding: isNarrow ? "7px 10px" : "7px 13px",
+                      borderRadius: 999,
+                      border: active ? `2px solid ${c.color}` : "2px solid #e2e8f0",
+                      background: active ? `${c.color}12` : "#fff",
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: active ? c.color : "#475569",
+                      maxWidth: "100%",
+                      minWidth: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: "50%",
+                        background: active ? c.color : "#e2e8f0",
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {c.name}
+                    </span>
+                  </button>
                     );
                   })}
                 </div>
@@ -1913,15 +1932,39 @@ function CandidateCard({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: isNarrow ? "1fr" : "minmax(380px, 520px) minmax(0, 1fr)",                
-                gap: 24,
+                gridTemplateColumns: isNarrow ? "1fr" : "minmax(380px, 520px) minmax(0, 1fr)",
+                gap: isNarrow ? 16 : 24,
                 alignItems: "center",
                 marginBottom: 16,
+                minWidth: 0,
               }}
             >
-              <div style={{ display: "flex", justifyContent: "center", paddingLeft: 12 }}>                
-              <RadarChart candidate={candidate} size={350} compares={compares} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingLeft: isNarrow ? 0 : 12,
+                minWidth: 0,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                }}
+              >
+                <RadarChart
+                  candidate={candidate}
+                  size={isNarrow ? 200 : 350}
+                  compares={compares}
+                  compactLabels={isNarrow}
+
+                />
               </div>
+            </div>
 
               <div style={{ display: "grid", gap: 12 }}>
                 <div style={{ fontSize: 12, fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: 0.5 }}>

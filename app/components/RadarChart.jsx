@@ -5,6 +5,7 @@ export default function RadarChart({
   size = 340,
   compares = [],
   exportMode = false,
+  compactLabels = false,
 }) {
   const padX = exportMode ? 110 : 92;
   const padY = exportMode ? 90 : 72;
@@ -16,7 +17,7 @@ export default function RadarChart({
   const cy = svgH / 2;
 
   const maxR = size * 0.32;
-  const labelR = size * 0.46;
+  const labelR = compactLabels ? size * 0.42 : size * 0.46;
   const n = DIMENSIONS.length;
 
   function polarToCart(angle, r) {
@@ -178,7 +179,22 @@ export default function RadarChart({
             fill={PILLAR_COLORS[d.pillar]}
             fontFamily="system-ui, sans-serif"
           >
-            {d.short}
+            {compactLabels
+              ? ({
+                  charter: "Charter",
+                  reform: "Reform",
+                  appointments: "Appts",
+                  leadership: "Lead",
+                  crisis: "Crisis",
+                  engagement: "Engage",
+                  emergingrisks: "Risks",
+                  development: "Dev",
+                  peace: "Peace",
+                  accountability: "Account.",
+                  gender: "Gender",
+                  humanrights: "Rights",
+                }[d.id] || d.short)
+              : d.short}
           </text>
         );
       })}
